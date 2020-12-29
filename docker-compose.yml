@@ -1,0 +1,36 @@
+version: "3"
+services:
+  server:
+    image: jetbrains/teamcity-server
+    ports:
+      - "8000:8111"
+    volumes:
+      - ~/.devprod/teamcity/server/datadir:/data/teamcity_server/datadir
+      - ~/.devprod/teamcity/server/logs:/opt/teamcity/logs
+  teamcity-agent1:
+    user: root
+    image: jetbrains/teamcity-agent:2020.2.1-linux-sudo
+    privileged: true
+    volumes:
+      - ~/.devprod/teamcity/agent/agent1/conf:/data/teamcity_agent/conf
+    environment:
+      - DOCKER_IN_DOCKER=start
+      - SERVER_URL=http://server:8111
+  teamcity-agent2:
+    user: root
+    image: jetbrains/teamcity-agent:2020.2.1-linux-sudo
+    privileged: true
+    volumes:
+      - ~/.devprod/teamcity/agent/agent2/conf:/data/teamcity_agent/conf
+    environment:
+      - DOCKER_IN_DOCKER=start
+      - SERVER_URL=http://server:8111
+  teamcity-agent3:
+    user: root
+    image: jetbrains/teamcity-agent:2020.2.1-linux-sudo
+    privileged: true
+    volumes:
+      - ~/.devprod/teamcity/agent/agent3/conf:/data/teamcity_agent/conf
+    environment:
+      - DOCKER_IN_DOCKER=start
+      - SERVER_URL=http://server:8111
